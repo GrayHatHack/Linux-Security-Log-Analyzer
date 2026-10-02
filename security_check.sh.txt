@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Colors for styling
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+LOG_DIR="/var/log/security_reports"
+# Directory create karein agar pehle se nahi hai
+sudo mkdir -p "$LOG_DIR"
+
+TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+REPORT_FILE="$LOG_DIR/security_report_$TIMESTAMP.txt"
+
+echo "=== Security Log Analysis Report ===" | tee "$REPORT_FILE"
+echo "Date: $(date)" | tee -a "$REPORT_FILE"
+echo "-----------------------------------" | tee -a "$REPORT_FILE"
+
+# Check Failed Logins
+FAILED_COUNT=$(sudo grep -i "failed" /var/log/auth.log 2>/dev/null | wc -l)
+echo "[+] Total Failed Logins Found: $FAILED_COUNT" | tee -a "$REPORT_FILE"
+
+# Check Critical Errors
+ERROR_COUNT=$(sudo journalctl -p err -b 0 --no-pager | wc -l)
+echo "[+] Total Critical Errors in Current Boot: $ERROR_COUNT" | tee -a "$REPORT_FILE"
+echo "-----------------------------------" | tee -a "$REPORT_FILE"
+
+# Alert condition with colors
+if [ "$FAILED_COUNT" -gt 0 ]; then
+    echo -e "${RED}[!] WARNING: Suspicious failed login attempts detected!${NC}" | tee -a "$REPORT_FILE"
+else
+    echo -e "${GREEN}[+] Status: System looks clean from failed logins.${NC}" | tee -a "$REPORT_FILE"
+fi
+
+echo "-----------------------------------"
+echo -e "${YELLOW}[i] Report saved successfully at: $REPORT_FILE${NC}"
