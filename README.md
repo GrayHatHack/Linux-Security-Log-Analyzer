@@ -41,4 +41,38 @@ chmod +x security_check.sh log_cleanup.sh
   **3. Run the Security Audit:**
 ```bash
 sudo ./security_check.sh
-```  
+```
+  **4. Run the Log Cleanup Utility:**
+```bash
+sudo ./log_cleanup.sh
+```
+
+---
+
+### 🚀 Automation via Cron Jobs (Optional)
+To run these scripts automatically in the background, open your crontab editor:
+```bash
+crontab -e
+```
+Add the following schedules:
+```bash
+# Run security audit daily at midnight
+0 0 * * * /path/to/security_check.sh
+
+# Run log cleanup every Sunday at midnight
+0 0 * * 0 /path/to/log_cleanup.sh
+```
+Built with dedication as part of an entry-level cybersecurity portfolio.
+
+---
+
+### 💡 Key Takeaways & Practical Learnings
+* **Practical Linux System Administration:** Gained hands-on experience working with critical system logs (/var/log/auth.log, systemd-journald) and understanding how operating systems record security events.
+
+* **Bash Scripting & Automation:** Learned how to write robust, modular Bash scripts utilizing conditional statements, loops, variables, and ANSI color-coding for clean terminal outputs.
+
+* **File Management & Log Hygiene:** Implemented automated log rotation logic using the find command and -mtime parameters to prevent disk space exhaustion from accumulating log files.
+
+* **Background Task Scheduling:** Mastered the configuration and management of Cron Jobs to automate routine security checks and maintenance tasks without manual intervention.
+
+* **SOC & SIEM Fundamentals:** Developed a foundational understanding of how Security Operations Centers (SOC) automate threat detection and log archiving, mimicking a lightweight SIEM workflow.
